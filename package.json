@@ -1,0 +1,32 @@
+{
+  "name": "projeto2",
+  "version": "1.0.0",
+  "description": "Projeto PG",
+  "main": "projeto.js",
+  "dependencies": {
+    "jest": "^23.4.0",
+    "jquery": "^3.3.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^23.1.5",
+    "concurrently": "^3.6.0",
+    "parcel-bundler": "^1.9.6",
+    "ts-jest": "^23.0.0"
+  },
+  "scripts": {
+    "test": "tsc && jest",
+    "parcel": "parcel index.html -p 8080",
+    "tscw": "tsc --watch",
+    "dev": "concurrently --kill-others \"npm run parcel\" \"npm run tscw\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tafm/PG-projeto2.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tafm/PG-projeto2/issues"
+  },
+  "homepage": "https://github.com/tafm/PG-projeto2#readme"
+}

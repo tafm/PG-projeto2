@@ -1,39 +1,44 @@
-export class ponto2d {
-  x : number
-  y : number
+export class Ponto2d {
+  public static projecao (pontoA : Ponto2d, pontoB : Ponto2d) : Ponto2d {
+    return Ponto2d.multE(
+      pontoB,
+      Ponto2d.produtoInterno(pontoA, pontoB) / Math.pow(pontoB.norma(), 2)
+    )
+  }
+
+  public static soma (pontoA : Ponto2d, pontoB : Ponto2d) : Ponto2d {
+    return new Ponto2d(pontoA.x + pontoB.x, pontoA.y + pontoB.y)
+  }
+
+  public static subtracao (pontoA : Ponto2d, pontoB : Ponto2d) : Ponto2d {
+    return new Ponto2d(pontoA.x - pontoB.x, pontoA.y - pontoB.y)
+  }
+
+  public static multE (ponto : Ponto2d, escalar : number) : Ponto2d {
+    return new Ponto2d (ponto.x * escalar, ponto.y * escalar)
+  }
+
+  public static produtoInterno (pontoA : Ponto2d, pontoB : Ponto2d) : number {
+    return pontoA.x * pontoB.x + pontoA.y * pontoB.y
+  }
+
+  public x : number
+  public y : number
+
   constructor (x : number, y : number) {
     this.x = x
     this.y = y
   }
-  public soma (ponto : ponto2d) : void {
-    this.x += ponto.x
-    this.y += ponto.y
-  }
-  public subtrai (ponto : ponto2d) : void {
-    this.x -= ponto.x
-    this.y -= ponto.y
-  }
-  public multE (escalar: number) : void {
-    this.x *= escalar
-    this.y *= escalar
-  }
-  public norma () : number {
+
+  public norma (): number {
     return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2))
   }
-  public normalizado () : void {
-    let tam : number = this.norma()
-    this.x /= tam
-    this.y /= tam
-  }
-  public produtoInterno (ponto : ponto2d) : number {
-    return this.x * ponto.x + this.y * ponto.y
-  }
-  public ortogonalizacao (ponto : ponto2d) : void {
-    this.subtrai(ponto2d.projecao(this, ponto))
+
+  public normalizado () : Ponto2d {
+    return Ponto2d.multE(this, 1 / this.norma())
   }
 
-  public static projecao (pontoA : ponto2d, pontoB : ponto2d) : ponto2d {
-    pontoB.multE((pontoA.produtoInterno(pontoB) / Math.pow(pontoB.norma(), 2)))
-    return pontoB
+  public ortogonal (ponto : Ponto2d) : Ponto2d {
+    return Ponto2d.subtracao(this, Ponto2d.projecao(this, ponto))
   }
 }
