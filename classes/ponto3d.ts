@@ -1,5 +1,29 @@
 export class Ponto3d {
 
+  public static soma (pontoA : Ponto3d, pontoB : Ponto3d) : Ponto3d {
+    return new Ponto3d(pontoA.x + pontoB.x, pontoA.y + pontoB.y, pontoA.z + pontoB.z)
+  }
+
+  public static subtracao (pontoA : Ponto3d, pontoB : Ponto3d) : Ponto3d {
+    return new Ponto3d(pontoA.x - pontoB.x, pontoA.y - pontoB.y, pontoA.z - pontoB.z)
+  }
+
+  public static multE (ponto : Ponto3d, escalar : number) : Ponto3d {
+    return new Ponto3d (ponto.x * escalar, ponto.y * escalar, ponto.z * escalar)
+  }
+
+  public static produtoInterno (pontoA : Ponto3d, pontoB : Ponto3d) : number {
+    return pontoA.x * pontoB.x + pontoA.y + pontoB.y + pontoA.z * pontoB.z
+  }
+
+  public static produtoVetorial (pontoA : Ponto3d, pontoB : Ponto3d) : Ponto3d {
+    return new Ponto3d(
+      pontoA.y * pontoB.z - pontoA.z * pontoB.y,
+      pontoA.z * pontoB.x - pontoA.x * pontoB.z,
+      pontoA.x * pontoB.y - pontoA.y * pontoB.x
+    )
+  }
+
   public x : number
   public y : number
   public z : number
@@ -9,33 +33,18 @@ export class Ponto3d {
     this.y = y
     this.z = z
   }
-  public soma (ponto : Ponto3d) : void {
-    this.x += ponto.x
-    this.y += ponto.y
-    this.z += ponto.z
-  }
-  public subtrai (ponto : Ponto3d) : void {
-    this.x -= ponto.x
-    this.y -= ponto.y
-    this.z -= ponto.z
-  }
-  public multE (escalar: number) : void {
-    this.x *= escalar
-    this.y *= escalar
-    this.z *= escalar
-  }
+
   public norma () : number {
     return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2) + Math.pow(this.z, 2))
   }
+
   public normalizado () : void {
     let tam : number = this.norma()
     this.x /= tam
     this.y /= tam
     this.z /= tam
   }
-  public produtoInterno (ponto : Ponto3d) : number {
-    return this.x * ponto.x + this.y * ponto.y + this.z * ponto.z
-  }
+
   public produtoVetorial (ponto : Ponto3d) : void {
     this.x = this.y * ponto.z - this.z * ponto.y
     this.y = this.z * ponto.x - this.x * ponto.z
