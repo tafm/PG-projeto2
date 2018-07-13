@@ -1,3 +1,5 @@
+import { FuncoesAux } from './funcoesAux'
+
 export class Ponto3d {
 
   public static soma (pontoA : Ponto3d, pontoB : Ponto3d) : Ponto3d {
@@ -22,6 +24,12 @@ export class Ponto3d {
       pontoA.z * pontoB.x - pontoA.x * pontoB.z,
       pontoA.x * pontoB.y - pontoA.y * pontoB.x
     )
+  }
+
+  public static Eq (pontoA : Ponto3d, pontoB : Ponto3d) : boolean {
+    return FuncoesAux.EqDouble(pontoA.x, pontoB.x)
+    && FuncoesAux.EqDouble(pontoA.y, pontoB.y)
+    && FuncoesAux.EqDouble(pontoA.z, pontoB.z)
   }
 
   public x : number

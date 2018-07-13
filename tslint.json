@@ -13,7 +13,10 @@
       "quotemark": [true, "single"],
       "trailing-comma": [false],
       "prefer-const": false,
-      "no-console": [false]
+      "no-console": [false],
+      "no-empty": false,
+      "radix": false,
+      "max-line-length": [false]
     },
     "rulesDirectory": []
 }

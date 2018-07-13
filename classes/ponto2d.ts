@@ -1,4 +1,7 @@
+import { FuncoesAux } from './funcoesAux'
+
 export class Ponto2d {
+
   public static projecao (pontoA : Ponto2d, pontoB : Ponto2d) : Ponto2d {
     return Ponto2d.multE(
       pontoB,
@@ -20,6 +23,10 @@ export class Ponto2d {
 
   public static produtoInterno (pontoA : Ponto2d, pontoB : Ponto2d) : number {
     return pontoA.x * pontoB.x + pontoA.y * pontoB.y
+  }
+
+  public static Eq (pontoA : Ponto2d, pontoB : Ponto2d) : boolean {
+    return FuncoesAux.EqDouble(pontoA.x, pontoB.x) && FuncoesAux.EqDouble(pontoA.y, pontoB.y)
   }
 
   public x : number
