@@ -5,7 +5,6 @@ import { Triangulo } from './classes/triangulo'
 import { Vertice } from './classes/vertice'
 import RepositorioTriangulos from './repositorios/repositorioTriangulos'
 import RepositorioVertices from './repositorios/repositorioVertices'
-import repositorioVertices from './repositorios/repositorioVertices'
 
 function loadObject (arquivo : string) { // carrega o arquivo de objetos (considera quebra de linha como \n)
   // limpa os repositórios
@@ -40,7 +39,7 @@ function loadObject (arquivo : string) { // carrega o arquivo de objetos (consid
     )
   }
 
-  repositorioVertices.elementos.forEach((v) => {
+  RepositorioVertices.elementos.forEach((v) => {
     v.calculaNormal()
   })
 }
