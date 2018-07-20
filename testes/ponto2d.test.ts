@@ -20,4 +20,12 @@ test('Adição de ponto (3,2) por (1,1) deve dar o ponto (4,3)', () => {
   )
 })
 
-// ---
+// --- testa multiplicação por escalar
+
+test('Multiplicação do ponto (3,2) por escalar 3 deve dar o ponto (9, 6)', () => {
+  let pontoA = new Ponto2d(3, 2)
+  let escalar = 3
+  expect(Ponto2d.multE(pontoA, escalar)).toEqual(
+    { x: 9, y: 6 }
+  )
+})
