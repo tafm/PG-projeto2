@@ -46,7 +46,7 @@ export class FuncoesAux {
       let ia : RGB = new RGB(parseInt(iaAux[0]), parseInt(iaAux[1]), parseInt(iaAux[2]))
       let kd : number = parseFloat(linhas[3])
       let odAux : string[] = linhas[4].split(' ')
-      let od : RGB = new RGB(parseInt(odAux[0]), parseInt(odAux[1]), parseInt(odAux[2]))
+      let od : RGB = new RGB(parseFloat(odAux[0]), parseFloat(odAux[1]), parseFloat(odAux[2]))
       let ks : number = parseFloat(linhas[5])
       let ilAux : string[] = linhas[6].split(' ')
       let il : RGB = new RGB(parseInt(ilAux[0]), parseInt(ilAux[1]), parseInt(ilAux[2]))
@@ -74,8 +74,6 @@ export class FuncoesAux {
         RepositorioVertices.push(vertice)
       }
 
-      console.log(RepositorioVertices)
-
       for (let i = numVertices + 1; i < linhas.length; i++) {
         const t : string[] = linhas[i].split(' ')
         RepositorioTriangulos.push(
@@ -90,8 +88,6 @@ export class FuncoesAux {
       RepositorioVertices.elementos.forEach((v) => {
         v.calculaNormal()
       })
-
-      console.log(RepositorioTriangulos)
     }
   }
 

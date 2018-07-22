@@ -6,8 +6,8 @@ export class Bezier {
   constructor (entrada : string) {
     this.pontos = []
     let linhas : string[] = entrada.split('\n')
-    let qtdpontos : number = parseInt(linhas[0])
-    for (let i = 1; i <= qtdpontos; i++) {
+    let qtdpontos : number = parseInt(linhas[2])
+    for (let i = 3; i < qtdpontos + 3; i++) {
       let pontoAux : string[] = linhas[i].split(' ')
       this.pontos.push(new Ponto3d(
         parseFloat(pontoAux[0]),

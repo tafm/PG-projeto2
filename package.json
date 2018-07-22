@@ -17,7 +17,8 @@
     "test": "tsc && jest",
     "parcel": "parcel index.html -p 8080",
     "tscw": "tsc --watch",
-    "dev": "concurrently --kill-others \"npm run parcel\" \"npm run tscw\""
+    "dev": "concurrently --kill-others \"npm run parcel\" \"npm run tscw\"",
+    "deploy": "npm run build && surge dist -d https://projeto2pg.surge.sh"
   },
   "repository": {
     "type": "git",

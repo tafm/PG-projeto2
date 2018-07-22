@@ -15,7 +15,7 @@ export class Triangulo {
   public normal () : Ponto3d {
     let U : Ponto3d = Ponto3d.subtracao(this.vB.ponto, this.vA.ponto)
     let V : Ponto3d = Ponto3d.subtracao(this.vC.ponto, this.vA.ponto)
-    return Ponto3d.produtoVetorial(U, V)
+    return Ponto3d.produtoVetorial(U, V).normalizado()
   }
 
   public hasVertice (vertice : Vertice) : boolean { // usa o endereço de memória do vértice pra comparação

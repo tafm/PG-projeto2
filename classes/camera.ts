@@ -6,6 +6,7 @@ import { Iluminacao } from './iluminacao'
 import { Linha } from './linha'
 import { Ponto2d } from './ponto2d'
 import { Ponto3d } from './ponto3d'
+import { Ponto3dNormal } from './ponto3dNormal'
 import { RGB } from './RGB'
 import { Triangulo } from './triangulo'
 import { Vertice } from './vertice'
@@ -19,10 +20,11 @@ export class Camera {
   public hx : number // largura
   public hy : number // altura
 
-  private pontosCamera : Ponto3d[] // pontos nas coordenadas da câmera
+  private pontosCamera : Ponto3dNormal[] // pontos nas coordenadas da câmera
   private zbuffer : number[][] // pra não pintar em cima
   private pontosTela : Ponto2d[]
   private luzCamera : Ponto3d
+  private chamou : boolean
 
   constructor (p : Ponto3d, N : Ponto3d, V : Ponto3d, U : Ponto3d, d : number, hx : number, hy : number) {
     this.p = p
@@ -43,8 +45,7 @@ export class Camera {
     this.getPontosCamera(luz)
     this.getPontosTela(size)
     this.pintaTela(size, canvas)
-    // this.pintaTrianguloFlatBottom(1, 2, 3, ctx)
-    // this.pintaTrianguloFlatTop(1, 2, 3, ctx)
+
     repositorioTriangulos.elementos.forEach((t) => {
       this.pintaTriangulo(t, ctx, luz)
     })
@@ -67,19 +68,22 @@ export class Camera {
     repositorioVertices.elementos.forEach((e) => {
       let ponto = Ponto3d.subtracao(e.ponto, this.p)
       let result = FuncoesAux.multiplicaMatriz(M, [[ponto.x], [ponto.y], [ponto.z]])
-      this.pontosCamera.push(new Ponto3d(result[0][0], result[1][0], result[2][0]))
+      let pontoNormal = Ponto3d.subtracao(Ponto3d.soma(e.normal, e.ponto), this.p)
+      let resultNormal = FuncoesAux.multiplicaMatriz(M, [[pontoNormal.x], [pontoNormal.y], [pontoNormal.z]])
+      let pCamera = new Ponto3d(result[0][0], result[1][0], result[2][0])
+      let pNormal = new Ponto3d(resultNormal[0][0], resultNormal[1][0], resultNormal[2][0])
+      this.pontosCamera.push(new Ponto3dNormal(pCamera, Ponto3d.subtracao(pNormal, pCamera)))
     })
 
     // coordenadas da luz
-
-    let resultLuz = FuncoesAux.multiplicaMatriz(M, [[luz.pl.x], [luz.pl.y], [luz.pl.z]])
+    let luzMult = Ponto3d.subtracao(luz.pl, this.p)
+    let resultLuz = FuncoesAux.multiplicaMatriz(M, [[luzMult.x], [luzMult.y], [luzMult.z]])
     this.luzCamera = new Ponto3d(resultLuz[0][0], resultLuz[1][0], resultLuz[2][0])
   }
 
   private getPontosTela (size : {width : number, height: number}) : void { // mudança de pontos da câmera para tela
-    console.log(this.pontosCamera)
     this.pontosTela = []
-    this.pontosCamera.forEach((p) => { // semelhança de triângulos
+    this.pontosCamera.forEach(({ p }) => { // semelhança de triângulos
       let x = this.d / (p.z / p.x) / this.hx
       let y = this.d / (p.z / p.y) / this.hy
 
@@ -87,7 +91,6 @@ export class Camera {
       y = Math.round((1 - y) * size.height / 2)
       this.pontosTela.push(new Ponto2d(x, y))
     })
-    console.log(this.pontosTela)
   }
 
   private pintaTela (size : {width : number, height: number}, canvas : HTMLCanvasElement) : void {
@@ -141,7 +144,6 @@ export class Camera {
         if (!cor) { // se não retornar cor o z-buffer já tinha um valor menor armazenado
           continue
         }
-        console.log(cor)
         this.pintaPonto(ctx, Math.round(x), scanLineY, cor)
       }
       minX += varLeft
@@ -177,29 +179,31 @@ export class Camera {
     let l1 : Linha = new Linha (this.pontosTela[triangulo.vA.posicaoRep].x, this.pontosTela[triangulo.vB.posicaoRep].x, this.pontosTela[triangulo.vC.posicaoRep].x, ponto.x)
     let l2 : Linha = new Linha (this.pontosTela[triangulo.vA.posicaoRep].y, this.pontosTela[triangulo.vB.posicaoRep].y, this.pontosTela[triangulo.vC.posicaoRep].y, ponto.y)
     let esc : number[] = new Escalona(l1, l2, l3).esc()
-    let pontoCamera : Ponto3d = Ponto3d.soma(Ponto3d.soma(Ponto3d.multE(this.pontosCamera[triangulo.vA.posicaoRep], esc[0]), Ponto3d.multE(this.pontosCamera[triangulo.vB.posicaoRep], esc[1])), Ponto3d.multE(this.pontosCamera[triangulo.vC.posicaoRep], esc[2]))
-    let pontoNormal : Ponto3d = Ponto3d.soma(Ponto3d.soma(Ponto3d.multE(repositorioVertices.elementos[triangulo.vA.posicaoRep].normal, esc[0]), Ponto3d.multE(repositorioVertices.elementos[triangulo.vB.posicaoRep].normal, esc[1])), Ponto3d.multE(repositorioVertices.elementos[triangulo.vC.posicaoRep].normal, esc[2]))
-    console.log(pontoNormal)
+    let pontoCamera : Ponto3d = Ponto3d.soma(Ponto3d.soma(Ponto3d.multE(this.pontosCamera[triangulo.vA.posicaoRep].p, esc[0]), Ponto3d.multE(this.pontosCamera[triangulo.vB.posicaoRep].p, esc[1])), Ponto3d.multE(this.pontosCamera[triangulo.vC.posicaoRep].p, esc[2]))
+    let pontoNormal : Ponto3d = Ponto3d.soma(Ponto3d.soma(Ponto3d.multE(this.pontosCamera[triangulo.vA.posicaoRep].normal, esc[0]), Ponto3d.multE(this.pontosCamera[triangulo.vB.posicaoRep].normal, esc[1])), Ponto3d.multE(this.pontosCamera[triangulo.vC.posicaoRep].normal, esc[2]))
 
     if (ponto.x > 0 && ponto.x < this.zbuffer[0].length && pontoCamera.z < this.zbuffer[ponto.x][ponto.y]) { // só calcula a cor do ponto se o Z for menor que o Z do z-buffer
-    let ia : RGB = RGB.multiplica(luz.ia, luz.ka)
-    let l : Ponto3d = Ponto3d.subtracao(this.luzCamera, pontoCamera).normalizado()
-    let normal : Ponto3d = pontoNormal.normalizado()
-    let id : RGB = new RGB(0, 0, 0)
-    let ie : RGB = new RGB(0, 0, 0)
-    let v : Ponto3d = Ponto3d.multE(pontoCamera, -1).normalizado()
-    // if (Ponto3d.produtoEscalar(normal, v) < 0) {
-    //   normal = Ponto3d.multE(normal, -1)
-    // }
-    // if (Ponto3d.produtoEscalar(normal, l) >= 0) {
-    //   id = RGB.produto(luz.od, luz.il)
-    //   let r : Ponto3d = Ponto3d.subtracao(Ponto3d.multE(Ponto3d.multE(normal, 2), Ponto3d.produtoEscalar(normal, l)), l).normalizado()
-    //   if (Ponto3d.produtoEscalar(v, r) >= 0) {
-    //     ie = RGB.multiplica(RGB.multiplica(luz.il, luz.ks), Math.pow(Ponto3d.produtoEscalar(r, v), luz.n))
-    //   }
-    // }
-    return RGB.soma(RGB.soma(ia, id), ie)
+      this.zbuffer[ponto.x][ponto.y] = pontoCamera.z
+      let ia : RGB = RGB.multiplica(luz.ia, luz.ka)
+      let l : Ponto3d = Ponto3d.subtracao(this.luzCamera, pontoCamera).normalizado()
+      let normal : Ponto3d = pontoNormal.normalizado()
+      let id : RGB = new RGB(0, 0, 0)
+      let ie : RGB = new RGB(0, 0, 0)
+      let v : Ponto3d = Ponto3d.multE(pontoCamera, -1).normalizado()
+      if (Ponto3d.produtoEscalar(normal, v) < 0) {
+        normal = Ponto3d.multE(normal, -1)
+      }
+      if (Ponto3d.produtoEscalar(normal, l) >= 0) {
+        id = RGB.multiplica(RGB.multiplica(RGB.produto(luz.od, luz.il), luz.kd), Ponto3d.produtoEscalar(normal, l))
+        let r : Ponto3d = Ponto3d.subtracao(Ponto3d.multE(Ponto3d.multE(normal, 2), Ponto3d.produtoEscalar(normal, l)), l).normalizado()
+        if (Ponto3d.produtoEscalar(v, r) >= 0) {
+          ie = RGB.multiplica(RGB.multiplica(luz.il, luz.ks), Math.pow(Ponto3d.produtoEscalar(r, v), luz.n))
+        }
+      }
+      this.chamou = true
+      return RGB.soma(RGB.soma(ia, id), ie)
     } else {
+      this.chamou = true
       return null
     }
   }

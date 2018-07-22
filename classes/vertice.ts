@@ -19,6 +19,6 @@ export class Vertice {
       return Ponto3d.soma(ponto, a.normal())
     }, new Ponto3d(0, 0, 0))
 
-    this.normal = Ponto3d.multE(somaNormais, 1 / triangulosContemVertice.length)
+    this.normal = somaNormais
   }
 }
