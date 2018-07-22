@@ -4,10 +4,12 @@ import { Triangulo } from './triangulo'
 
 export class Vertice {
   public ponto : Ponto3d
+  public posicaoRep : number // posição do vértice no repositório de vértices (pra acessar o vértice do triângulo em outras bases)
   public normal : Ponto3d
 
-  constructor (ponto : Ponto3d) {
+  constructor (ponto : Ponto3d, posicao : number) {
     this.ponto = ponto
+    this.posicaoRep = posicao
   }
 
   public calculaNormal () : void {

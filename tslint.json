@@ -16,7 +16,8 @@
       "no-console": [false],
       "no-empty": false,
       "radix": false,
-      "max-line-length": [false]
+      "max-line-length": [false],
+      "prefer-for-of": false
     },
     "rulesDirectory": []
 }

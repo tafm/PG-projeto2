@@ -8,6 +8,10 @@ export class RGB {
     return new RGB(Math.min(Math.floor(cor.r * constante), 255), Math.min(Math.floor(cor.g * constante), 255), Math.min(Math.floor(cor.b * constante), 255))
   }
 
+  public static produto (cor1 : RGB, cor2 : RGB) : RGB {
+    return new RGB(Math.min(cor1.r * cor2.r, 255), Math.min(cor1.g * cor2.g, 255), Math.min(cor1.b * cor2.b, 255))
+  }
+
   public r : number
   public g : number
   public b : number

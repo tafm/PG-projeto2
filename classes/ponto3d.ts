@@ -26,6 +26,10 @@ export class Ponto3d {
     )
   }
 
+  public static produtoEscalar (pontoA : Ponto3d, pontoB : Ponto3d) : number {
+    return pontoA.x * pontoB.x + pontoA.y * pontoB.y + pontoA.z * pontoB.z
+  }
+
   public static Eq (pontoA : Ponto3d, pontoB : Ponto3d) : boolean {
     return FuncoesAux.EqDouble(pontoA.x, pontoB.x)
     && FuncoesAux.EqDouble(pontoA.y, pontoB.y)
@@ -46,16 +50,12 @@ export class Ponto3d {
     return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2) + Math.pow(this.z, 2))
   }
 
-  public normalizado () : void {
+  public normalizado () : Ponto3d {
     let tam : number = this.norma()
-    this.x /= tam
-    this.y /= tam
-    this.z /= tam
-  }
-
-  public produtoVetorial (ponto : Ponto3d) : void {
-    this.x = this.y * ponto.z - this.z * ponto.y
-    this.y = this.z * ponto.x - this.x * ponto.z
-    this.z = this.x * ponto.y - this.y * ponto.x
+    return new Ponto3d(
+      this.x / tam,
+      this.y / tam,
+      this.z / tam
+    )
   }
 }
