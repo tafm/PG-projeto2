@@ -24,7 +24,6 @@ export class Camera {
   private zbuffer : number[][] // pra não pintar em cima
   private pontosTela : Ponto2d[]
   private luzCamera : Ponto3d
-  private chamou : boolean
 
   constructor (p : Ponto3d, N : Ponto3d, V : Ponto3d, U : Ponto3d, d : number, hx : number, hy : number) {
     this.p = p
@@ -200,10 +199,8 @@ export class Camera {
           ie = RGB.multiplica(RGB.multiplica(luz.il, luz.ks), Math.pow(Ponto3d.produtoEscalar(r, v), luz.n))
         }
       }
-      this.chamou = true
       return RGB.soma(RGB.soma(ia, id), ie)
     } else {
-      this.chamou = true
       return null
     }
   }
