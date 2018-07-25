@@ -48,11 +48,11 @@ async function iniciaCamera () {
 
 $('#botao').click(() => {
   leituraEntradas()
-  // iniciaCamera()
+  iniciaCamera()
 
-  let canvasFunc = camera.takeFrame(size, iluminacao) // pega um frame da câmera e desenha na tela
-  let ctx = canvas.getContext('2d')
-  ctx.drawImage(canvasFunc, 0, 0)
+  // let canvasFunc = camera.takeFrame(size, iluminacao) // pega um frame da câmera e desenha na tela
+  // let ctx = canvas.getContext('2d')
+  // ctx.drawImage(canvasFunc, 0, 0)
 })
 
 // fake entradas
