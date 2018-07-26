@@ -13,7 +13,8 @@
     "@types/node": "^10.5.2",
     "concurrently": "^3.6.0",
     "parcel-bundler": "^1.9.6",
-    "ts-jest": "^23.0.0"
+    "ts-jest": "^23.0.0",
+    "tsc": "^1.20150623.0"
   },
   "scripts": {
     "test": "tsc && jest",
