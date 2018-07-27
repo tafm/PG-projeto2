@@ -21,3 +21,8 @@ Terceiro campo é de iluminação, segue o padrão das entradas dada no projeto
 Por fim a curva de bezier.
 
 Precione OK e veja o objeto ser renderizado.
+
+--------------------------
+
+Uma versão online do projeto se encontra em:
+https://projeto2pg.surge.sh/
